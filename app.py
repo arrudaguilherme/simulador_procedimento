@@ -14,6 +14,8 @@ st.set_page_config(
 # -------------------
 secrets = st.secrets.to_dict()
 
+secrets = st.secrets.to_dict()
+
 authenticator = stauth.Authenticate(
     credentials=secrets['credentials'],
     cookie_name=secrets['cookie']['name'],
@@ -24,7 +26,6 @@ authenticator = stauth.Authenticate(
 # Login
 # -------------------
 name, authentication_status, username = authenticator.login("Login", "main")
-
 if authentication_status:
     # -------------------
     # Logout
