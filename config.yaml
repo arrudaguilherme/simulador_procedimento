@@ -1,0 +1,14 @@
+credentials:
+  usernames:
+    admin:
+      name: Admin User
+      email: admin@example.com
+      password: $2b$12$2qmx1P.ed7wKzgT5cy/LGOh7vJEhni5XTWCY.TPPOBpsmAaC.J7Ii
+    user:
+      name: Regular User
+      email: user@example.com
+      password: $2b$12$BSOTpUGl94lx9KG6UvXjnOeLQ/a3Su50w8YglJ.Dazzf5WMQ5q7Eu
+
+cookie:
+  name: simulador_auth
+  key: random_signature_key_123456789
