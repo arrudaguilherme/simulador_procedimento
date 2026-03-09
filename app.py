@@ -1,6 +1,5 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-import yaml
 
 # -------------------
 # Configuração do app
@@ -11,38 +10,30 @@ st.set_page_config(
 )
 
 # -------------------
-# Carregando credenciais do YAML
+# Carregando credenciais do Streamlit Secrets
 # -------------------
-with open("config.yaml") as file:
-    config = yaml.safe_load(file)
+secrets = st.secrets.to_dict()
 
 authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
+    credentials=secrets['credentials'],
+    cookie_name=secrets['cookie']['name'],
+    key=secrets['cookie']['key']
 )
 
 # -------------------
-# Centralizando login e logo
+# Login
 # -------------------
-st.write("")  # espaço superior
-col_left, col_center, col_right = st.columns([1, 2, 1])
+name, authentication_status, username = authenticator.login("Login", "main")
 
-with col_center:
-    st.write("")  # espaço
-    name, authentication_status, username = authenticator.login(
-        "Simulador Financeiro de Procedimento",
-        location="main"
-    )
-
-# -------------------
-# Após login
-# -------------------
 if authentication_status:
-    # Logout no sidebar
+    # -------------------
+    # Logout
+    # -------------------
     authenticator.logout("Logout", "sidebar")
 
+    # -------------------
     # Cabeçalho com logo e título
+    # -------------------
     header_col1, header_col2 = st.columns([1, 8])
     with header_col1:
         st.image("assets/logo_titulo.jpeg", width=60)
@@ -114,16 +105,9 @@ if authentication_status:
     # -------------------
     crm_pay = valor_procedimento * TAXA_ADMIN
 
-    # Valor ajustado = soma procedimento + equipamento + CRM
     valor_procedimento_ajustado = valor_procedimento + valor_equipamento + crm_pay
-
-    # Aplicando taxa do método sobre valor ajustado
     valor_pos_taxa = valor_procedimento_ajustado / (1 - taxa_metodo)
-
-    # Valor da taxa do método (apenas referência)
     valor_taxa_metodo = valor_pos_taxa - valor_procedimento_ajustado
-
-    # Repasse médico atualizado (não inclui taxa do método)
     repasse_medico = valor_procedimento - crm_pay
 
     # -------------------
